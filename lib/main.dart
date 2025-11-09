@@ -1,10 +1,13 @@
-import 'dart:io';
-import 'package:calculadora_dev_internacional/shared/localization/localization_app.dart';
-import 'package:calculadora_dev_internacional/shared/localization/translate_app.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:calculadora_dev_internacional/shared/localization/localization_app.dart';
+import 'package:calculadora_dev_internacional/shared/localization/translate_app.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'package:calculadora_dev_internacional/app_navigator.dart';
+
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -34,30 +37,39 @@ Future<Map<String, dynamic>> getData() async {
 }
 
 void main() async {
-  //admob parte 1...
   WidgetsFlutterBinding.ensureInitialized();
-  //Admob.initialize();
   await MobileAds.instance.initialize();
   List<String> testDevice = ["B21373F543315FE0F022BB45B59CA1A2"];
   RequestConfiguration config = RequestConfiguration(testDeviceIds: testDevice);
   MobileAds.instance.updateRequestConfiguration(config);
-  //fim parte 1...
 
   runApp(
     MaterialApp(
       home: Home(),
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.green,
-        hintColor: Colors.green,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.green,
+          brightness: Brightness.light,
+        ),
+        // primarySwatch: Colors.green,
+        // hintColor: Colors.green,
         scaffoldBackgroundColor: Colors.white,
+        useMaterial3: true,
         // primaryColor: Colors.white,
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        primarySwatch: Colors.green,
-        hintColor: Colors.green,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.green,
+          brightness: Brightness.dark,
+          primary: Colors.green[300],
+          onPrimary: Colors.black,
+        ),
+        // primarySwatch: Colors.green,
         scaffoldBackgroundColor: Color(0xFF121212),
+        hintColor: Colors.green[300],
+        useMaterial3: true,
       ),
       themeMode: ThemeMode.system,
       supportedLocales: [
@@ -482,7 +494,7 @@ class _HomeState extends State<Home> {
           style: GoogleFonts.poppins(
             color: Theme.of(context).colorScheme.primary,
             fontWeight: FontWeight.w600,
-        ),
+          ),
         ),
         centerTitle: true,
       ),
@@ -665,13 +677,15 @@ class _HomeState extends State<Home> {
         labelStyle: GoogleFonts.lato(color: Theme.of(context).hintColor),
         filled: true,
         fillColor: Theme.of(context).colorScheme.primary.withAlpha(20),
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide.none,
+        ),
         prefixText: prefix,
-        prefixStyle: TextStyle(
-          // color: Colors.green, 
-          color: Theme.of(context).colorScheme.primary,
-          fontSize: 25.0),
-
+        prefixStyle: GoogleFonts.lato(
+            // color: Colors.green,
+            color: Theme.of(context).colorScheme.primary,
+            fontSize: 25.0),
         // ADICIONA O BOTÃO DE LIMPAR (X)
         suffixIcon: c.text.isNotEmpty
             ? IconButton(
@@ -680,11 +694,10 @@ class _HomeState extends State<Home> {
               )
             : null, // Não mostra nada se o campo estiver vazio
       ),
-      style: 
-      TextStyle(
-        // color: Colors.green, 
-        color: Theme.of(context).colorScheme.primary,
-        fontSize: 25.0),
+      style: GoogleFonts.lato(
+          // color: Colors.green,
+          color: Theme.of(context).colorScheme.primary,
+          fontSize: 25.0),
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       onChanged: f,
     );
