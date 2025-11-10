@@ -1,9 +1,16 @@
 {
-  "titleapp": "Calculadora Dev Inter.",
+  "titleApp": "Calculadora Dev Inter.",
   "loading": "Atualizando as moedas, aguarde...",
-  "loadingerror": "Erro ao atualizar as moedas...",
+  "loadingError": "Erro ao atualizar as moedas...",
   "dataNotFound": "Dados de moeda não encontrados...",
   "real": "Reais",
   "dolar": "Dólar",
-  "euro": "Euro"
+  "euro": "Euro",
+  "converterTitle": "Conversor de Moedas",
+  "salaryTitle": "Calculadora de Salário",
+  "salaryAnnual": "Salário Anual",
+  "salaryMonthly": "Salário Mensal",
+  "salaryHourly": "Salário por Hora",
+  "salaryBased": "Cálculo por hora baseado em {hours} horas mensais.",
+  "salaryResults": "Resultados:"
 }
