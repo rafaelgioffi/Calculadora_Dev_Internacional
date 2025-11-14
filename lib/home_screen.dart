@@ -1,13 +1,11 @@
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:international_calc/shared/localization/localization_app.dart';
 import 'package:international_calc/shared/localization/translate_app.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
@@ -17,26 +15,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
-  BannerAd? _bannerAd;
-  bool _isBannerAdReady = false;
-  // InterstitialAd? _interstitialAd;
-  // bool _adsInitialized = false;
-
-  final bannerAdIdAndroid = "ca-app-pub-9686860589009637/7987536502"; // Real
-  // final bannerAdIdAndroid = "ca-app-pub-3940256099942544/6300978111";   // Teste
-
-  final bannerAdIdIos = "ca-app-pub-9686860589009637/7987536502";
-
-  // final intertstitialAdIdAndroid = "ca-app-pub-9686860589009637~1247061853";
-  // final intertstitialAdIdAndroid = "ca-app-pub-3940256099942544/1033173712";  // Test
-
-  // final intertstitialAdIdIos = "ca-app-pub-3940256099942544/4411468910";
-
-  String get bannerAdUnitId =>
-      Platform.isIOS ? bannerAdIdIos : bannerAdIdAndroid;
-  // String get interstitialAdUnitId =>
-  // Platform.isIOS ? intertstitialAdIdIos : intertstitialAdIdAndroid;
+class _HomeState extends State<Home> { 
 
   final realControlador = TextEditingController();
   final dolarControlador = TextEditingController();
@@ -58,7 +37,7 @@ class _HomeState extends State<Home> {
 
     _parseApiData();
     // _dadosMoeda = getData();
-    _loadBannerAd();
+    // _loadBannerAd();
     
     realControlador.addListener(_onTextChanged);
     dolarControlador.addListener(_onTextChanged);
@@ -73,7 +52,6 @@ class _HomeState extends State<Home> {
     // }).catchError((error) {
     //   print('Erro ao carregar dados: $error');
     // });
-
   }
 
   void _parseApiData() {
@@ -97,9 +75,7 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  void dispose() {
-    _bannerAd?.dispose();
-    // _interstitialAd?.dispose();
+  void dispose() {    
     // Limpa listeners
     realControlador.removeListener(_onTextChanged);
     dolarControlador.removeListener(_onTextChanged);
@@ -163,53 +139,7 @@ class _HomeState extends State<Home> {
     setState(() {
       controller.text = formatador.format(value);
     });
-  }
-
-  void _loadBannerAd() {
-    print("Iniciando carregamento do Banner Ad...");
-    _bannerAd = BannerAd(
-      adUnitId: bannerAdUnitId,
-      size: AdSize.fullBanner,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          print("✅ Banner Ad Carregado com Sucesso!");
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          print('BannerAd failed to load: $error');
-          _isBannerAdReady = false;
-          ad.dispose();
-        },
-      ),
-    );
-    _bannerAd!.load();
-  }
-
-  Widget _buildBannerAdWidget() {
-    // 1. Se não estiver pronto, não ocupe espaço
-    // if (!_isBannerAdReady) {
-    if (_isBannerAdReady) {
-      // return SizedBox.shrink();
-      return SizedBox(
-        width: _bannerAd!.size.width.toDouble(),
-        height: _bannerAd!.size.height.toDouble(),
-        child: AdWidget(ad: _bannerAd!),
-      );
-    }
-    return Container(height: AdSize.fullBanner.height.toDouble());
-    // if (_isBannerAdReady) {
-    // return Align(
-    //   alignment: Alignment.bottomCenter,
-    //   child: SizedBox(
-    //     width: _bannerAd!.size.width.toDouble(),
-    //     height: _bannerAd!.size.height.toDouble(),
-    //     child: AdWidget(ad: _bannerAd!),
-    //   ),
-    // );
-  }
+  }  
   
 // Função helper para formatar saida...
   NumberFormat _getCurrencyFormat(BuildContext context) {
@@ -311,103 +241,13 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // return FutureBuilder<Map<String, dynamic>>(
-        // future: _dadosMoeda,
-        // builder: (context, snapshot) {
-        //   switch (snapshot.connectionState) {
-        //     case ConnectionState.none:
-        //     case ConnectionState.waiting:
-        //       return Center(
-        //         child: Text(
-        //           TranslateApp(context).text('loading'),
-        //           // 'Carregando...',
-        //           style: TextStyle(fontSize: 24.0, color: Colors.blueAccent),
-        //         ),
-        //       );
-
-        //     default:
-        //       if (snapshot.hasError || snapshot.data == null) {
-        //         return Center(
-        //           child: Text(TranslateApp(context).text('loadingerror')),
-        //         );
-        //       } else {
-        //         // ADICIONEI ESTE PRINT PARA TESTE
-        //         print("✅ Future concluído. Construindo a UI principal...");
-
-        //         final data = snapshot.data!;
-        //         final results = data["results"];
-
-        //         if (results == null) {
-        //           return Center(
-        //             child: Text(TranslateApp(context).text('loadingerror')),
-        //             // child: Text('Dados de câmbio indisponíveis :('),
-        //           );
-        //         }
-
-        //         final currencies = results["currencies"];
-        //         if (currencies == null) {
-        //           return Center(
-        //             child: Text(TranslateApp(context).text('dataNotFound')),
-        //             // child: Text('Dados de câmbio indisponíveis :('),
-        //           );
-        //         }
-
-        //         final usd = currencies["USD"];
-        //         final eur = currencies["EUR"];
-        //         final btcCurrency = currencies["BTC"];
-
-        //         if (usd == null || eur == null || btcCurrency == null) {
-        //           return Center(
-        //             child: Text(TranslateApp(context).text('dataNotFound')),
-        //             // child: Text('Dados de câmbio indisponíveis :('),
-        //           );
-        //         }
-
-        //         dolar = (usd["sell"] ?? 0.0).toDouble();
-        //         euro = (eur["sell"] ?? 0.0).toDouble();
-        //         btc = (btcCurrency["sell"] ?? 0.0).toDouble();
-
-                // dolar = snapshot.data["results"]["currencies"]["USD"]["sell"];
-                // euro = snapshot.data["results"]["currencies"]["EUR"]["sell"];
-                // btc = snapshot.data["results"]["currencies"]["BTC"]["sell"];
-                // print(dolar);
-                // print(euro);
-                // print(btc);
-                // String dolar2 = dolar.toStringAsFixed(2);
-                // String euro2 = euro.toStringAsFixed(2);
-                // String btc2 = btc.toStringAsFixed(2);
-                // dolar = double.parse(dolar2);
-                // euro = double.parse(euro2);
-                // btc = double.parse(btc2);
-                // print(dolar);
-                // print(euro);
-                // print(btc);
-
-                // CORREÇÃO DO ADMOB: Carrega o anúncio SÓ AGORA
-                // if (snapshot.connectionState == ConnectionState.done &&
-                //     !_adsInitialized) {
-                // if (!_adsInitialized) {
-                //   _adsInitialized = true;
-                  // Adiciona um atraso para garantir que a UI dos TextFields
-                  // seja renderizada antes de carregar o Ad (Platform View)
-                  // Future.delayed(Duration(milliseconds: 500), () {
-                  //   // 'mounted' verifica se o widget ainda está na tela
-                  //   if (mounted) {
-                  // _loadBannerAd(); // Carrega o anúncio com segurança
-                  // }
-                  // });
-                // }
-
+  Widget build(BuildContext context) {    
                 // return Stack(
                 return Column(
                   children: [
                     Expanded(
                     child: SingleChildScrollView(
-                      padding: EdgeInsets.all(10.0),
-                      // child: Padding(
-                        // padding: const EdgeInsets.only(bottom: 60.0),
-                        // child: Column(
+                      padding: EdgeInsets.all(10.0),                      
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
@@ -455,7 +295,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
-                    _buildBannerAdWidget(),
+                    // _buildBannerAdWidget(),
                   ],
                 );
               }
