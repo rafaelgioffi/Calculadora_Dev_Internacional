@@ -1,10 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:international_calc/shared/localization/localization_app.dart';
 import 'package:international_calc/shared/localization/translate_app.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -253,7 +249,7 @@ class _HomeState extends State<Home> {
                           children: <Widget>[
                             Icon(
                               Icons.monetization_on,
-                              size: 150.0,
+                              size: 100.0,
                               // color: Colors.lightGreen,
                               color: Theme.of(context).colorScheme.primary,
                             ),

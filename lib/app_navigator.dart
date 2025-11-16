@@ -111,16 +111,7 @@ class _AppNavigatorState extends State<AppNavigator> {
       );
     }
     
-    return Container(height: AdSize.fullBanner.height.toDouble());
-    // if (_isBannerAdReady) {
-    // return Align(
-    //   alignment: Alignment.bottomCenter,
-    //   child: SizedBox(
-    //     width: _bannerAd!.size.width.toDouble(),
-    //     height: _bannerAd!.size.height.toDouble(),
-    //     child: AdWidget(ad: _bannerAd!),
-    //   ),
-    // );
+    return Container(height: AdSize.fullBanner.height.toDouble());    
   }
 
   void _onItemTapped(int index) {
