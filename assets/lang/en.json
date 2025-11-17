@@ -6,11 +6,11 @@
   "real": "Brazilian Real",
   "dolar": "Dolar",
   "euro": "Euro",
-  "converterTitle": "Conversor de Moedas",
-  "salaryTitle": "Calculadora de Salário",
-  "salaryAnnual": "Salário Anual",
-  "salaryMonthly": "Salário Mensal",
-  "salaryHourly": "Salário por Hora",
-  "salaryBased": "Cálculo por hora baseado em {hours} horas mensais.",
-  "salaryResults": "Resultados:"
+  "converterTitle": "Currency Converter",
+  "salaryTitle": "Salary Calculator",
+  "salaryAnnual": "Annual Salary",
+  "salaryMonthly": "Month Salary",
+  "salaryHourly": "Salary per Hour",
+  "salaryResults": "Results:",
+  "salaryHoursPerMonth": "Hours per Month:"
 }

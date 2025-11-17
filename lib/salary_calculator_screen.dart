@@ -119,10 +119,14 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
 
   void _onHoursChanged() {
     double? newHours = double.tryParse(hoursControlador.text);
-    if (newHours != null && newHours > 0 && newHours <= 300) {
+    if (newHours == null || newHours <= 0 || newHours > 300) {
+      return;
+    }
       if (newHours != _hoursPerMonth) {
         setState(() {
           _hoursPerMonth = newHours;
+          if (!hoursFocus.hasFocus) {            
+          }
         });
         if (annualControlador.text.isNotEmpty) {
           _annualTroca(annualControlador.text);
@@ -133,7 +137,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
         }
       }
     }
-  }
+  
 
   void _formatField(TextEditingController controller, int digits) {
     if (controller.text.isEmpty) return;
@@ -227,7 +231,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
     setState(() {
       _monthlyBRL = monthlyInput * _selectedRate;
       _annualBRL = _monthlyBRL * 12;
-      _hourlyBRL = _hourlyBRL / _hoursPerMonth;
+      _hourlyBRL = _monthlyBRL / _hoursPerMonth;
     });
     _updateTextFields();
   }
@@ -311,14 +315,20 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
 
   //slider das horas por mês...
   Widget _buildHoursSlider() {
-    String hoursText = TranslateApp(context).text('salaryBased');
-    hoursText = hoursText.replaceAll('{hours}', _hoursPerMonth.toStringAsFixed(0));
+    // String hoursText = TranslateApp(context).text('salaryBased');
+    // hoursText = hoursText.replaceAll('{hours}', _hoursPerMonth.toStringAsFixed(0));
     
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
-          child: Text(hoursText, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodySmall),
+          child: Text(TranslateApp(context).text('salaryHoursPerMonth'),
+           textAlign: TextAlign.center, 
+           style: TextStyle(
+            fontSize: 16,
+           color: Theme.of(context).colorScheme.primary.withAlpha(220)
+           ),
+           ),
         ),
         Row(
           children: [
@@ -430,7 +440,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
                 Text(
                   TranslateApp(context).text('salaryResults'),
                   style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.primary),
                   textAlign: TextAlign.center,
@@ -480,11 +490,16 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
     required String hourly,
   }) {
     final titleStyle = TextStyle(
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: FontWeight.bold,
         color: Theme.of(context).colorScheme.primary);
-    final labelStyle = Theme.of(context).textTheme.bodyMedium;
-    final valueStyle = labelStyle?.copyWith(fontWeight: FontWeight.bold);
+    final labelStyle = TextStyle(
+      fontSize: 16,
+      color: Theme.of(context).textTheme.bodyMedium?.color);
+    final valueStyle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Theme.of(context).colorScheme.primary.withAlpha(220));
 
     return Card(
       elevation: 2,
@@ -505,7 +520,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
                 Text(annual, style: valueStyle),
               ],
             ),
-            SizedBox(height: 4),
+            SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -514,7 +529,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
                 Text(monthly, style: valueStyle),
               ],
             ),
-            SizedBox(height: 4),
+            SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

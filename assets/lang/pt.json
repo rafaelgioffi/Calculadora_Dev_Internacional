@@ -11,6 +11,6 @@
   "salaryAnnual": "Salário Anual",
   "salaryMonthly": "Salário Mensal",
   "salaryHourly": "Salário por Hora",
-  "salaryBased": "Cálculo por hora baseado em {hours} horas mensais.",
-  "salaryResults": "Resultados:"
+  "salaryResults": "Resultados:",
+  "salaryHoursPerMonth": "Horas por Mês:"
 }
