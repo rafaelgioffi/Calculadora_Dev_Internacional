@@ -25,6 +25,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
   double _selectedRate = 1.0;
   String _selectedPrefix = "US\$ ";
   List<bool> _isSelected = [false, true, false, false];
+  int _currentDecimalPlaces = 2;
 
 // Variáveis para os resultados
   double _annualBRL = 0.0;
@@ -44,6 +45,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
     _parseApiData();
 
     _selectedRate = dolar;
+    _currentDecimalPlaces = 2;
     hoursControlador.text = _hoursPerMonth.toStringAsFixed(0);
 
     // Adiciona listeners para os botões 'X'
@@ -106,15 +108,15 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
   }
 
   void _onAnnualFocusChange() {
-    if (!annualFocus.hasFocus) _formatField(annualControlador, 2);
+    if (!annualFocus.hasFocus) _formatField(annualControlador, _currentDecimalPlaces);
   }
 
   void _onMonthlyFocusChange() {
-    if (!monthlyFocus.hasFocus) _formatField(monthlyControlador, 2);
+    if (!monthlyFocus.hasFocus) _formatField(monthlyControlador, _currentDecimalPlaces);
   }
 
   void _onHourlyFocusChange() {
-    if (!hourlyFocus.hasFocus) _formatField(hourlyControlador, 2);
+    if (!hourlyFocus.hasFocus) _formatField(hourlyControlador, _currentDecimalPlaces);
   }
 
   void _onHoursChanged() {
@@ -169,9 +171,16 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
   }
 
   double _parseInput(String text, int digits) {
-    final formatador = _getCurrencyFormat(context, digits);
-    String cleanText = text.replaceAll(formatador.symbols.GROUP_SEP, '');
-    cleanText = cleanText.replaceAll(formatador.symbols.DECIMAL_SEP, '.');
+    // final formatador = _getCurrencyFormat(context, digits);
+    // String cleanText = text.replaceAll(formatador.symbols.GROUP_SEP, '');
+    // cleanText = cleanText.replaceAll(formatador.symbols.DECIMAL_SEP, '.');
+    String cleanText = text.replaceAll(',', '.');
+    if (cleanText.contains('.')) {
+      int lastDot = cleanText.lastIndexOf('.');
+      String integerPart = cleanText.substring(0, lastDot).replaceAll('.', '');
+      String decimalPart = cleanText.substring(lastDot);
+      cleanText = integerPart + decimalPart;
+    }
     try {
       return double.parse(cleanText);
     } catch (e) {
@@ -189,7 +198,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
       // hourlyControlador.clear();
       // return;
     }
-    final formatador = _getCurrencyFormat(context, 2);
+    final formatador = _getCurrencyFormat(context, _currentDecimalPlaces);
 
     if (!annualFocus.hasFocus) {
       annualControlador.text = formatador.format(_annualBRL / _selectedRate);
@@ -209,7 +218,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
       return;
     }
 
-    double annualInput = _parseInput(text, 2);
+    double annualInput = _parseInput(text, _currentDecimalPlaces);
 
     setState(() {
       _annualBRL = annualInput * _selectedRate;
@@ -226,7 +235,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
       return;
     }
 
-    double monthlyInput = _parseInput(text, 2);
+    double monthlyInput = _parseInput(text, _currentDecimalPlaces);
 
     setState(() {
       _monthlyBRL = monthlyInput * _selectedRate;
@@ -245,7 +254,7 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
 
     // final formatador = _getCurrencyFormat(context, 2);
 
-    double hourlyInput = _parseInput(text, 2);
+    double hourlyInput = _parseInput(text, _currentDecimalPlaces);
     // double monthly = hourly * _hoursPerMonth;
     // double annual = monthly * 12;
 
@@ -280,21 +289,25 @@ class _SalaryCalculatorScreenState extends State<SalaryCalculatorScreen> {
               _selectedCurrency = "BRL";
               _selectedRate = 1.0;
               _selectedPrefix = "R\$ ";
+              _currentDecimalPlaces = 2;
               break;
             case 1:
               _selectedCurrency = "USD";
               _selectedRate = dolar;
               _selectedPrefix = "US\$ ";
+              _currentDecimalPlaces = 2;
               break;
             case 2:
               _selectedCurrency = "EUR";
               _selectedRate = euro;
               _selectedPrefix = "€ ";
+              _currentDecimalPlaces = 2;
               break;
             case 3:
               _selectedCurrency = "BTC";
               _selectedRate = btc;
               _selectedPrefix = "₿ ";
+              _currentDecimalPlaces = 8;
               break;
           }
 
