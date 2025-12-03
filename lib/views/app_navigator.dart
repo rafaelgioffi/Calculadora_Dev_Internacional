@@ -23,10 +23,10 @@ class _AppNavigatorState extends State<AppNavigator> {
   // InterstitialAd? _interstitialAd;
   // bool _adsInitialized = false;
 
-  final bannerAdIdAndroid = "ca-app-pub-9686860589009637/7987536502"; // Real
+  final bannerAdIdAndroid = "ca-app-pub-9686860589009637/5449571135"; // Real
   // final bannerAdIdAndroid = "ca-app-pub-3940256099942544/6300978111";   // Teste
 
-  final bannerAdIdIos = "ca-app-pub-9686860589009637/7987536502";
+  final bannerAdIdIos = "ca-app-pub-9686860589009637/5449571135";
 
   // final intertstitialAdIdAndroid = "ca-app-pub-9686860589009637~1247061853";
   // final intertstitialAdIdAndroid = "ca-app-pub-3940256099942544/1033173712";  // Test
